@@ -10,14 +10,16 @@ import actions.views.EmployeeView;
 import constants.JpaConst;
 import models.Employee;
 import models.validators.EmployeeValidator;
+import utils.EncryptUtil;
 
 public class EmployeeService extends ServiceBase {
+
     public List<EmployeeView> getPerPage(int page) {
         List<Employee> employees = em.createNamedQuery(JpaConst.Q_EMP_GET_ALL, Employee.class)
-                .setFirstRwsult(JpaConst.ROW_PER_PAGE * (page - 1))
+                .setFirstResult(JpaConst.ROW_PER_PAGE * (page - 1))
                 .setMaxResults(JpaConst.ROW_PER_PAGE)
-                .setResultList();
-        return EmployeeConverter.toViewList(employee);
+                .getResultList();
+        return EmployeeConverter.toViewList(employees);
     }
 
     public long countAll() {
@@ -56,7 +58,7 @@ public class EmployeeService extends ServiceBase {
     }
 
     public List<String> create(EmployeeView ev, String pepper){
-        string pass = EncryptUtil.getPasswordEncrypt(ev.getPassword(),pepper);
+        String pass = EncryptUtil.getPasswordEncrypt(ev.getPassword(),pepper);
         ev.setPassword(pass);
 
         LocalDateTime now = LocalDateTime.now();
@@ -72,6 +74,9 @@ public class EmployeeService extends ServiceBase {
         return errors;
     }
     public List<String> update(EmployeeView ev, String pepper){
+        EmployeeView savedEmp = findOne(ev.getId());
+        boolean validateCode = false;
+        if (!savedEmp.getCode().equals(ev.getCode())) {
 
         validateCode = true;
 
@@ -93,6 +98,8 @@ public class EmployeeService extends ServiceBase {
     List<String> errors = EmployeeValidator.validate(this, savedEmp, validateCode, validatePass);
 
     if(errors.size() == 0) {
+        update(savedEmp);
+    }
         return errors;
     }
 
@@ -105,7 +112,7 @@ public class EmployeeService extends ServiceBase {
 
         savedEmp.setDeleteFlag(JpaConst.EMP_DEL_TRUE);
 
-        update(saveEmp);
+        update(savedEmp);
 
     }
 
@@ -130,12 +137,12 @@ public class EmployeeService extends ServiceBase {
     private void create(EmployeeView ev) {
         em.getTransaction().begin();
         em.persist(EmployeeConverter.toModel(ev));
-        em.getTransaction()commit();
+        em.getTransaction().commit();
 
     }
 
     private void update(EmployeeView ev) {
-        em.getTransaction()begin();
+        em.getTransaction().begin();
         Employee e = findOneInternal(ev.getId());
         EmployeeConverter.copyViewToModel(e, ev);
         em.getTransaction().commit();
