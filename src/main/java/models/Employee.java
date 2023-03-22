@@ -44,22 +44,25 @@ public class Employee {
     @Column(name = JpaConst.EMP_COL_ID)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(name = JpaConst.EMP_COL_CODE, nullable = false, unique = true)
     private String code;
-    
+
     @Column(name = JpaConst.EMP_COL_NAME, nullable = false)
     private String name;
-    
+
     @Column(name = JpaConst.EMP_COL_PASS, length = 64, nullable = false)
     private String password;
-    
+
     @Column(name = JpaConst.EMP_COL_ADMIN_FLAG, nullable = false)
     private Integer adminFlag;
-    
+
     @Column(name = JpaConst.EMP_COL_CREATED_AT, nullable = false)
     private LocalDateTime createdAt;
-    
+
     @Column(name = JpaConst.EMP_COL_UPDATED_AT, nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = JpaConst.EMP_COL_DELETE_FLAG, nullable = false)
     private Integer deleteFlag;
 }
