@@ -116,8 +116,8 @@ public class EmployeeAction extends ActionBase {
 
         if(checkToken()) {
             EmployeeView ev = new EmployeeView(
-                    tonumber(getRequestParam(AttributeConst.EMP_ID)),
-                    getRequestparam(AttributeConst.EMP_CODE),
+                    toNumber(getRequestParam(AttributeConst.EMP_ID)),
+                    getRequestParam(AttributeConst.EMP_CODE),
                     getRequestParam(AttributeConst.EMP_NAME),
                     getRequestParam(AttributeConst.EMP_PASS),
                     toNumber(getRequestParam(AttributeConst.EMP_ADMIN_FLG)),
@@ -138,6 +138,14 @@ public class EmployeeAction extends ActionBase {
                 putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
                 redirect(ForwardConst.ACT_EMP, ForwardConst.CMD_INDEX);
             }
+        }
+    }
+
+    public void destroy() throws ServletException, IOException{
+        if(checkToken()) {
+            service.destroy(toNumber(getRequestParam(AttributeConst.EMP_ID)));
+            putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
+            redirect(ForwardConst.ACT_EMP, ForwardConst.CMD_INDEX);
         }
     }
 }
