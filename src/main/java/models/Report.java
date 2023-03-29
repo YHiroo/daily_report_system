@@ -36,6 +36,7 @@ import lombok.Setter;
             name = JpaConst.Q_REP_COUNT_ALL_MINE,
             query = JpaConst.Q_REP_COUNT_ALL_MINE_DEF)
 })
+
 @Getter
 @Setter
 @NoArgsConstructor

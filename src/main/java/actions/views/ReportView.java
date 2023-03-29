@@ -12,21 +12,26 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class ReportView {
-    
-    private Integer id;
-    
-    private EmployeeView employee;
-    
-    private LocalDate reportDate;
-    
-    private String title;
-    
-    private String content;
-    
-    private LocalDateTime createdAt;
-    
-    private LocalDateTime updatedAt;
 
+
+    private Integer id;
+
+
+    private EmployeeView employee;
+
+
+    private LocalDate reportDate;
+
+
+    private String title;
+
+
+    private String content;
+
+
+    private LocalDateTime createdAt;
+
+
+    private LocalDateTime updatedAt;
 }
