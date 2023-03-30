@@ -26,22 +26,22 @@ public class EmployeeAction extends ActionBase {
 
     public void index() throws ServletException, IOException{
         if (checkAdmin()) {
-        int page = getPage();
-        List<EmployeeView> employees = service.getPerPage(page);
+            int page = getPage();
+            List<EmployeeView> employees = service.getPerPage(page);
 
-        long employeeCount = service.countAll();
+            long employeeCount = service.countAll();
 
-        putRequestScope(AttributeConst.EMPLOYEES, employees);
-        putRequestScope(AttributeConst.EMP_COUNT, employeeCount);
-        putRequestScope(AttributeConst.PAGE, page);
-        putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE);
+            putRequestScope(AttributeConst.EMPLOYEES, employees);
+            putRequestScope(AttributeConst.EMP_COUNT, employeeCount);
+            putRequestScope(AttributeConst.PAGE, page);
+            putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE);
 
-        String flush = getSessionScope(AttributeConst.FLUSH);
-        if(flush != null) {
-            putRequestScope(AttributeConst.FLUSH, flush);
-            removeSessionScope(AttributeConst.FLUSH);
-        forward(ForwardConst.FW_EMP_INDEX);
-        }
+            String flush = getSessionScope(AttributeConst.FLUSH);
+            if(flush != null) {
+                putRequestScope(AttributeConst.FLUSH, flush);
+                removeSessionScope(AttributeConst.FLUSH);
+            }
+            forward(ForwardConst.FW_EMP_INDEX);
         }
     }
 
